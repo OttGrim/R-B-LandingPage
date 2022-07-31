@@ -6,3 +6,5 @@
 2. Typescript
 3. ViteJS
 4. Styled Components
+5. React Router
+6. MUI
