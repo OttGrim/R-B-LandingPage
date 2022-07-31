@@ -7,13 +7,13 @@ const Menu = () => {
             <Link to="/home">Home</Link>
         </S.ItemList>
         <S.ItemList>
-            <Link to="/">About us</Link>
+            <Link to="/aboutus">About us</Link>
         </S.ItemList>
         <S.ItemList>
-            <Link to='/'>Invite</Link>
+            <a href="https://google.com" target="_blank" rel="noreferrer noopener">Invite</a>
         </S.ItemList>
         <S.ItemList>
-            <Link to="/">Comunity</Link>
+            <a href="https://google.com" target="_blank" rel="noreferrer noopener">Comunity</a>
         </S.ItemList>
     </S.MenuList>
 }
