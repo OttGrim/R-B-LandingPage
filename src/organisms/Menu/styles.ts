@@ -13,12 +13,12 @@ export const ItemList = styled.li`
     
     &:hover{
         a{
-            color: #418c85;
+            color: #474747;
             transition: color 0.25s ease;
         }
     }
 
     a{
-    color: #4f4e4d;
+    color: #7d7d7c;
     }
 `
