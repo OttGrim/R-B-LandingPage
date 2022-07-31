@@ -1,4 +1,5 @@
 import { createGlobalStyle } from 'styled-components'
+import Rpgbk from '../assets/rpgbackground.jpg'
 
 const globalStyle = createGlobalStyle`
     * {
@@ -9,14 +10,16 @@ const globalStyle = createGlobalStyle`
 
     html, body, #root {
         height: 100%;
-        font-family: 'Poppins', sans-serif;
     }
 
-    background-color: #F8FDFF;
-
+    body{
+        background-color: #F8FDFF;
+        font-family: 'Poppins', sans-serif;
+    }
+    
     button{
         font-family: 'Poppins', sans-serif;
-        background-color: trasparent;
+        background-color: #F8FDFF;
         border: none;
         outline: none;
         cursor: pointer;
