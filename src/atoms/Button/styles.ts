@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 export const Container = styled.button`
     width: 130px;
@@ -13,8 +14,18 @@ export const Container = styled.button`
     transition: all 0.25s ease-out;
 
     &:hover{
-        color: #fff;
+        color: #FFF;
         background-color: #474747;
         box-shadow: 0px 0px 17px -5px #474747;
+    }
+`
+
+export const StyledLink = styled(Link)`
+    text-decoration: none;
+    color: #474747;
+
+    &:hover{
+        color: #fff;
+        
     }
 `

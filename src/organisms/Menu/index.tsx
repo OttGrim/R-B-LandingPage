@@ -1,18 +1,19 @@
 import * as S from './styles'
+import { Link } from 'react-router-dom'
 
 const Menu = () => {
     return <S.MenuList>
         <S.ItemList>
-            <a href='#'>Home</a>
+            <Link to="/home">Home</Link>
         </S.ItemList>
         <S.ItemList>
-            <a href='#'>About us</a>
+            <Link to="/">About us</Link>
         </S.ItemList>
         <S.ItemList>
-            <a href='#'>Invite</a>
+            <Link to='/'>Invite</Link>
         </S.ItemList>
         <S.ItemList>
-            <a href=''>Comunity</a>
+            <Link to="/">Comunity</Link>
         </S.ItemList>
     </S.MenuList>
 }
