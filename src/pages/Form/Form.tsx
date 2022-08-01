@@ -1,66 +1,45 @@
+import { useState } from 'react';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormLabel from '@mui/material/FormLabel';
-import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import Radio from '@mui/material/Radio';
 import { saveSheet } from '../../services/sheetService';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
 import Frontend from '../../templates/Frontend';
-import './styles.css';
+import './styles.css'
 
-function Form() {
+
+function App() {
     const [form, setForm] = useState({
         name: '',
         class: 'Fighter',
         description: '',
         race: 'Human',
-        strenght: '',
-        dexterity: '',
-        constitution: '',
-        intelligence: '',
-        wisdom: '',
-        charisma: '',
-        gender: 'Other'
+        strenght: 0,
+        dexterity: 0,
+        constitution: 0,
+        intelligence: 0,
+        wisdom: 0,
+        charisma: 0,
+        gender: 'other'
     });
 
-
     interface IformInputs {
-        name: string,
-        class: string,
-        description: string,
-        race: string,
+        name: string | "",
+        class: string | "",
+        description: string | "",
+        race: string | "",
         strenght: number,
         dexterity: number,
         constitution: number,
         intelligence: number,
         wisdom: number,
         charisma: number,
-        gender: string
+        gender: string | ""
     }
 
-    const schema = yup.object({
-        name: yup.string().required('campo obrigatorio'),
-        class: yup.string().required('campo obrigatorio'),
-        description: yup.string().required('campo obrigatorio'),
-        race: yup.string().required('campo obrigatorio'),
-        strenght: yup.number().required('campo obrigatorio'),
-        dexterity: yup.number().required('campo obrigatorio'),
-        constitution: yup.number().required('campo obrigatorio'),
-        intelligence: yup.number().required('campo obrigatorio'),
-        wisdom: yup.number().required('campo obrigatorio'),
-        charisma: yup.number().required('campo obrigatorio'),
-        gender: yup.string().required('campo obrigatorio')
-    }).required();
-
-    const { handleSubmit, register, formState: { errors } } = useForm<IformInputs>({
-        resolver: yupResolver(schema)
+    const [error, setError] = useState({
+        name: ''
     })
-
-    const [onFetching, setOnFetching] = useState<boolean>(
-        false
-    )
 
     const onChange = (e: any) => {
         const { value, name, type, checked } = e.target;
@@ -71,29 +50,43 @@ function Form() {
         }));
     }
 
-    const showData = () => {
-        console.log('Form: ', form);
+    const handleChange = (e: any) => {
+        form.gender = e.target.defaultValue
     }
 
-    const onSubmit = (sheet: IformInputs) => {
-        //e.preventDefault();
 
-        // if (form.name.length >= 16) {
-        //     setError((state) => ({
-        //         ...state,
-        //         name: 'Too long'
-        //     }));
-        //     return;
-        // } else {
-        //     setError((state) => ({
-        //         ...state,
-        //         name: ''
-        //     }))
-        // };
-        console.log("dentro")
+    const onSubmit = (e: any) => {
+        e.preventDefault();
+
+        const sheet: IformInputs = {
+            name: form.name,
+            class: form.class,
+            description: form.description,
+            race: form.race,
+            strenght: form.strenght,
+            dexterity: form.dexterity,
+            constitution: form.constitution,
+            intelligence: form.intelligence,
+            wisdom: form.wisdom,
+            charisma: form.charisma,
+            gender: form.gender
+        }
+
+        if (form.name.length >= 16) {
+            setError((state) => ({
+                ...state,
+                name: 'Too long'
+            }));
+            return;
+        } else {
+            setError((state) => ({
+                ...state,
+                name: ''
+            }))
+        };
+
         saveSheet(sheet);
 
-        showData();
     }
 
     return (
@@ -101,15 +94,19 @@ function Form() {
             <div className="form">
                 <header className="Form-header">
                     <h1>Character Registration</h1>
-                    <form onSubmit={handleSubmit(onSubmit)} id="form1">
+                    <form onSubmit={onSubmit}>
                         <label>
                             Name:
-                            <input required minLength={0 - 16} type="text" {...register('name', { required: true })} />
+                            <input required minLength={0 - 16} onChange={onChange} type="text" name="name" value={form.name} />
                         </label>
-
+                        {!!error.name && (
+                            <div>
+                                <i>{error.name}</i>
+                            </div>
+                        )}
                         <label>
                             Class:
-                            <select defaultValue={"Fighter"}{...register('class', { required: true })}>
+                            <select onChange={onChange} value={form.class} name="class">
                                 <option value="Barbarian">Barbarian</option>
                                 <option value="Bard">Bard</option>
                                 <option value="Cleric">Cleric</option>
@@ -127,7 +124,7 @@ function Form() {
 
                         <label>
                             Race:
-                            <select defaultValue={"Human"}{...register('race', { required: true })}>
+                            <select onChange={onChange} value={form.race} name="race">
                                 <option value="Elf">Elf</option>
                                 <option value="Dwarf">Dwarf</option>
                                 <option value="Human">Human</option>
@@ -142,11 +139,12 @@ function Form() {
 
                         <FormLabel id="demo-radio-buttons-group-label"></FormLabel>
                         <h3>Gender:</h3>
-                        <RadioGroup {...register('gender', { required: true })}
+                        <RadioGroup
+                            onChange={handleChange}
                             row
                             aria-labelledby="demo-radio-buttons-group-label"
                             defaultValue="other"
-                            name="radio-buttons-group"
+                            name="gender"
                         >
                             <FormControlLabel value="female" control={<Radio />} label="Female" labelPlacement='start' />
                             <FormControlLabel value="male" control={<Radio />} label="Male" labelPlacement='start' />
@@ -155,41 +153,41 @@ function Form() {
 
                         <label>
                             Strenght:
-                            <input type="number" min="0" max="4" placeholder='+0' {...register('strenght', { required: true })} />
+                            <input type="number" onChange={onChange} name="strenght" min="0" max="4" placeholder='+0' value={form.strenght} />
                         </label>
 
                         <label>
                             Dexterity:
-                            <input type="number" min="0" max="4" placeholder='+0' {...register('dexterity', { required: true })} />
+                            <input type="number" onChange={onChange} name="dexterity" min="0" max="4" placeholder='+0' value={form.dexterity} />
                         </label>
 
                         <label>
                             Constitution:
-                            <input type="number" min="0" max="4" placeholder='+0' {...register('constitution', { required: true })} />
+                            <input type="number" onChange={onChange} name="constitution" min="0" max="4" placeholder='+0' value={form.constitution} />
                         </label>
 
                         <label>
                             Intelligence:
-                            <input type="number" min="0" max="4" placeholder='+0' {...register('intelligence', { required: true })} />
+                            <input type="number" onChange={onChange} name="intelligence" min="0" max="4" placeholder='+0' value={form.intelligence} />
                         </label>
 
                         <label>
                             Wisdom:
-                            <input type="number" min="0" max="4" placeholder='+0' {...register('wisdom', { required: true })} />
+                            <input type="number" onChange={onChange} name="wisdom" min="0" max="4" placeholder='+0' value={form.wisdom} />
                         </label>
 
                         <label>
                             Charisma:
-                            <input type="number" min="0" max="4" placeholder='+0' {...register('charisma', { required: true })} />
+                            <input type="number" onChange={onChange} name="charisma" min="0" max="4" placeholder='+0' value={form.charisma} />
                         </label>
 
                         <label>
                             Lore:
-                            <textarea {...register('description', { required: true })} />
+                            <textarea onChange={onChange} name="description" value={form.description} />
                         </label>
 
                         <div>
-                            <button className='Btnsubmit' type='submit' form='form1'>Submit</button>
+                            <button className='Btnsubmit'>Submit</button>
                         </div>
 
                     </form>
@@ -199,4 +197,4 @@ function Form() {
     );
 }
 
-export default Form;
+export default App;
