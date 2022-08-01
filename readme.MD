@@ -8,6 +8,4 @@
 4. Styled Components
 5. React Router
 6. MUI
-7. React Hooks
-8. Yup
-9. Axios
+7. Axios
